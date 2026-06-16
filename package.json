@@ -2,9 +2,12 @@
   "name": "app-web-projet",
   "version": "1.0.0",
   "description": "Mon application sur Elastic Beanstalk",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
-    "test": "echo 'Aucun test pour le moment' && exit 0"
+    "test": "echo 'Aucun test pour le moment' && exit 0",
+    "start": "node server.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
