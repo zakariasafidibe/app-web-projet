@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installation des outils d'optimisation..."
+      - npm install -g minify
+  build:
+    commands:
+      - echo "Début de la phase de Build à l'aide de npm..."
+      - echo "Minification du fichier index.html pour la production..."
+      - minify index.html > index.min.html
+      - mv index.min.html index.html
+  post_build:
+    commands:
+      - echo "Build terminé avec succès !"
+
+artifacts:
+  files:
+    - index.html
