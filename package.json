@@ -1,0 +1,10 @@
+{
+  "name": "app-web-projet",
+  "version": "1.0.0",
+  "description": "Mon application sur Elastic Beanstalk",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo 'Aucun test pour le moment' && exit 0"
+  },
+  "dependencies": {}
+}
