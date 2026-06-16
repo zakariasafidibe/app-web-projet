@@ -5,23 +5,24 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "Installation des dépendances et de l'outil de minification..."
+      - echo "Installation des outils..."
       - npm install
       - npm install -g minify
   pre_build:
     commands:
-      - echo "Lancement des tests unitaires..."
+      - echo "Lancement des tests..."
       - npm test
   build:
     commands:
-      - echo "Si les tests passent, on build..."
+      - echo "Minification..."
       - minify index.html > index.min.html
       - mv index.min.html index.html
   post_build:
     commands:
-      - echo "Build terminé avec succès !"
+      - echo "Build OK !"
 
 artifacts:
   files:
     - index.html
     - package.json
+    - server.js
