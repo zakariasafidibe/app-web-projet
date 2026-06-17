@@ -1,28 +1,24 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 18
-    commands:
-      - echo "Installation des outils..."
-      - npm install
-      - npm install -g minify
   pre_build:
     commands:
-      - echo "Lancement des tests..."
-      - npm test
+      - echo Connexion à Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO_URL
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c1-7)
+      - IMAGE_TAG=${COMMIT_HASH:-latest}
   build:
     commands:
-      - echo "Minification..."
-      - minify index.html > index.min.html
-      - mv index.min.html index.html
+      - echo Construction de l'image Docker...
+      - docker build -t $ECR_REPO_URL:latest .
+      - docker build -t $ECR_REPO_URL:$IMAGE_TAG .
   post_build:
     commands:
-      - echo "Build OK !"
+      - echo Envoi de l'image sur ECR...
+      - docker push $ECR_REPO_URL:latest
+      - docker push $ECR_REPO_URL:$IMAGE_TAG
+      - echo Préparation du fichier d'artefact pour le déploiement...
+      - printf '[{"name":"web","imageUri":"%s"}]' $ECR_REPO_URL:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
-  files:
-    - index.html
-    - package.json
-    - server.js
+  files: imagedefinitions.json
