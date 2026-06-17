@@ -17,9 +17,9 @@ phases:
       - echo "Envoi de l'image sur ECR..."
       - docker push 176319219989.dkr.ecr.eu-west-1.amazonaws.com/mon-application-docker:latest
       - docker push 176319219989.dkr.ecr.eu-west-1.amazonaws.com/mon-application-docker:$IMAGE_TAG
-      - echo "Génération du fichier d'artefact pour Elastic Beanstalk..."
-      - printf '[{"name":"web","imageUri":"%s"}]' 176319219989.dkr.ecr.eu-west-1.amazonaws.com/mon-application-docker:$IMAGE_TAG > imagedefinitions.json
+      - echo "Génération du fichier Dockerrun.aws.json pour Elastic Beanstalk..."
+      - printf '{"AWSEBDockerrunVersion":"1","Image":{"Name":"176319219989.dkr.ecr.eu-west-1.amazonaws.com/mon-application-docker:%s","Update":"true"},"Ports":[{"ContainerPort":8080}]}' $IMAGE_TAG > Dockerrun.aws.json
 
 artifacts:
   files:
-    - imagedefinitions.json
+    - Dockerrun.aws.json
